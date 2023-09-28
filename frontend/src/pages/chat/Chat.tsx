@@ -42,7 +42,7 @@ const Chat = () => {
     const appStateContext = useContext(AppStateContext)
     const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
+    const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(true);
     const [activeCitation, setActiveCitation] = useState<[content: string, id: string, title: string, filepath: string, url: string, metadata: string]>();
     const [isCitationPanelOpen, setIsCitationPanelOpen] = useState<boolean>(false);
     const abortFuncs = useRef([] as AbortController[]);
