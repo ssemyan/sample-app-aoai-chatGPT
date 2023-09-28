@@ -71,15 +71,6 @@ Please see the [section below](#add-an-identity-provider) for important informat
 3. Start the app with `start.cmd`. This will build the frontend, install backend dependencies, and then start the app.
 4. You can see the local running app at http://127.0.0.1:5000.
 
-#### Local Setup: Enable Chat History
-To enable chat history, you will need to set up CosmosDB resources. The ARM template in the `infrastructure` folder can be used to deploy an app service and a CosmosDB with the database and container configured. Then specify these additional environment variables: 
-- `AZURE_COSMOSDB_ACCOUNT`
-- `AZURE_COSMOSDB_DATABASE`
-- `AZURE_COSMOSDB_CONVERSATIONS_CONTAINER`
-- `AZURE_COSMOSDB_ACCOUNT_KEY`
-
-As above, start the app with `start.cmd`, then visit the local running app at http://127.0.0.1:5000.
-
 #### Deploy with the Azure CLI
 **NOTE**: If you've made code changes, be sure to **build the app code** with `start.cmd` or `start.sh` before you deploy, otherwise your changes will not be picked up. If you've updated any files in the `frontend` folder, make sure you see updates to the files in the `static` folder before you deploy.
 
