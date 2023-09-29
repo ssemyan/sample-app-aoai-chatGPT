@@ -1,6 +1,8 @@
-# [Preview] Sample Chat App with AOAI
+# Sample Chat App for use with with Azure Open AI and OpenAI (optionaly on your data)
 
-This repo contains sample code for a simple chat webapp that integrates with Azure OpenAI. Note: some portions of the app use preview APIs.
+This repo contains sample code for a simple chat webapp that integrates with Azure OpenAI. It can be used to demonstrate the capabilities of Azure OpenAI, or as a starting point for your own chat app.
+
+This work was forked from [sample-app-aoai-chatGPT](https://github.com/microsoft/sample-app-aoai-chatGPT). I removed the history and user info in order to make a more simple sample. This project may not be kept in sync with the parent project.
 
 ## Prerequisites
 - An existing Azure OpenAI resource and model deployment of a chat model (e.g. `gpt-35-turbo-16k`, `gpt-4`)
@@ -8,15 +10,10 @@ This repo contains sample code for a simple chat webapp that integrates with Azu
 
 ## Deploy the app
 
-### Deploy with Azure Developer CLI
-Please see [README_azd.md](./README_azd.md) for detailed instructions.
-
 ### One click Azure deployment
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fsample-app-aoai-chatGPT%2Fmain%2Finfrastructure%2Fdeployment.json)
 
 Click on the Deploy to Azure button and configure your settings in the Azure Portal as described in the [Environment variables](#environment-variables) section.
-
-Please see the [section below](#add-an-identity-provider) for important information about adding authentication to your app.
 
 ### Deploy from your local machine
 
@@ -60,7 +57,7 @@ Please see the [section below](#add-an-identity-provider) for important informat
 
 1. You can see the local running app at http://127.0.0.1:5000.
 
-#### Local Setup: Chat with your data (Preview)
+#### Local Setup: Chat with your data
 [More information about Azure OpenAI on your data](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/concepts/use-your-data)
 
 1. Update the `AZURE_OPENAI_*` environment variables as described above. 
@@ -87,27 +84,19 @@ Please see the [section below](#add-an-identity-provider) for important informat
     - `AZURE_OPENAI_EMBEDDING_ENDPOINT`
     - `AZURE_OPENAI_EMBEDDING_KEY`
 
-3. Start the app with `start.cmd`. This will build the frontend, install backend dependencies, and then start the app.
+3. After building the front end and back end as described in the [Local Setup: Basic Chat Experience](#local-setup-basic-chat-experience), start the app with `start.sh`. 
 4. You can see the local running app at http://127.0.0.1:5000.
 
 #### Deploy with the Azure CLI
-**NOTE**: If you've made code changes, be sure to **build the app code** with `start.cmd` or `start.sh` before you deploy, otherwise your changes will not be picked up. If you've updated any files in the `frontend` folder, make sure you see updates to the files in the `static` folder before you deploy.
+**NOTE**: If you've made code changes, be sure to **build the app code** as described in the [Local Setup: Basic Chat Experience](#local-setup-basic-chat-experience) before you deploy, otherwise your changes will not be picked up. If you've updated any files in the `frontend` folder, make sure you see updates to the files in the `static` folder before you deploy.
 
-You can use the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) to deploy the app from your local machine. Make sure you have version 2.48.1 or later.
+You can use the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) to deploy the app from your local machine. Make sure you have version 2.48.1 or later and are logged into your subscription.
 
-If this is your first time deploying the app, you can use [az webapp up](https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up). Run the following command from the root folder of the repo, updating the placeholder values to your desired app name, resource group, location, and subscription. You can also change the SKU if desired.
+If this is your first time deploying the app, you can use [az webapp up](https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-up). Run the following command from the root folder of the repo, updating the placeholder values to your desired app name, sku size, resource group, location, and subscription. For example, the basic SKU is `B1` and the standard SKU is `S1`. 
 
-`az webapp up --runtime PYTHON:3.10 --sku B1 --name <new-app-name> --resource-group <resource-group-name> --location <azure-region> --subscription <subscription-name>`
+`az webapp up --runtime PYTHON:3.11 --sku <sku> --name <new-app-name> --resource-group <resource-group-name> --location <azure-region>`
 
-If you've deployed the app previously, first run this command to update the appsettings to allow local code deployment:
-
-`az webapp config appsettings set -g <resource-group-name> -n <existing-app-name> --settings WEBSITE_WEBDEPLOY_USE_SCM=false`
-
-Check the runtime stack for your app by viewing the app service resource in the Azure Portal. If it shows "Python - 3.10", use `PYTHON:3.10` in the runtime argument below. If it shows "Python - 3.11", use `PYTHON:3.11` in the runtime argument below. 
-
-Check the SKU in the same way. Use the abbreviated SKU name in the argument below, e.g. for "Basic (B1)" the SKU is `B1`. 
-
-Then, use the `az webapp up` command to deploy your local code to the existing app:
+To update the app, simply run the `az webapp up` command to redeploy to the existing app:
 
 `az webapp up --runtime <runtime-stack> --sku <sku> --name <existing-app-name> --resource-group <resource-group-name>`
 
@@ -116,14 +105,9 @@ Make sure that the app name and resource group match exactly for the app that wa
 Deployment will take several minutes. When it completes, you should be able to navigate to your app at {app-name}.azurewebsites.net.
 
 ### Add an identity provider
-After deployment, you will need to add an identity provider to provide authentication support in your app. See [this tutorial](https://learn.microsoft.com/en-us/azure/app-service/scenario-secure-app-authentication-app-service) for more information.
+After deployment, you may want to add an identity provider to provide authentication support in your app. See [this tutorial](https://learn.microsoft.com/en-us/azure/app-service/scenario-secure-app-authentication-app-service) for more information.
 
-If you don't add an identity provider, the chat functionality of your app will be blocked to prevent unauthorized access to your resources and data. To remove this restriction, or add further access controls, update the logic in `getUserInfoList` in `frontend/src/pages/chat/Chat.tsx`. For example, disable the authorization check like so:
-```
-const getUserInfoList = async () => {
-        setShowAuthMessage(false);
-}
-```
+If you don't add an identity provider, the chat functionality of your app be open to the public and you may experience abuse or run up substantial costs.
 
 ## Best Practices
 Feel free to fork this repository and make your own modifications to the UX or backend logic. For example, you may want to expose some of the settings in `app.py` in the UI for users to try out different behaviors. We recommend keeping these best practices in mind:
@@ -169,25 +153,3 @@ Note: settings starting with `AZURE_SEARCH` are only needed when using Azure Ope
 |AZURE_OPENAI_EMBEDDING_ENDPOINT||The endpoint for your Ada embedding model deployment if using vector search.
 |AZURE_OPENAI_EMBEDDING_KEY||The key for the Azure OpenAI resource with the Ada deployment to use with vector search.|
 
-
-## Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Trademarks
-
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
