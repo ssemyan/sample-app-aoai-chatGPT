@@ -17,7 +17,6 @@ import {
     Citation,
     ToolMessageContent,
     ChatResponse,
-    getUserInfo,
     Conversation,
     historyGenerate,
     historyUpdate,
@@ -28,7 +27,6 @@ import {
 } from "../../api";
 import { Answer } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
-import { ChatHistoryPanel } from "../../components/ChatHistory/ChatHistoryPanel";
 import { AppStateContext } from "../../state/AppProvider";
 import { useBoolean } from "@fluentui/react-hooks";
 
@@ -683,7 +681,6 @@ const Chat = () => {
                         
                     </Stack.Item>
                 )}
-                {(appStateContext?.state.isChatHistoryOpen && appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured) && <ChatHistoryPanel/>}
                 </Stack>
             )}
         </div>
