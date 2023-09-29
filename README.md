@@ -81,8 +81,6 @@ Click on the Deploy to Azure button and configure your settings in the Azure Por
     - `AZURE_SEARCH_QUERY_TYPE`
     - `AZURE_SEARCH_PERMITTED_GROUPS_COLUMN`
     - `AZURE_SEARCH_STRICTNESS`
-    - `AZURE_OPENAI_EMBEDDING_ENDPOINT`
-    - `AZURE_OPENAI_EMBEDDING_KEY`
 
 3. After building the front end and back end as described in the [Local Setup: Basic Chat Experience](#local-setup-basic-chat-experience), start the app with `start.sh`. 
 4. You can see the local running app at http://127.0.0.1:5000.
@@ -121,14 +119,6 @@ After deployment, you may want to add an identity provider to provide authentica
 
 If you don't add an identity provider, the chat functionality of your app be open to the public and you may experience abuse or run up substantial costs.
 
-## Best Practices
-Feel free to fork this repository and make your own modifications to the UX or backend logic. For example, you may want to expose some of the settings in `app.py` in the UI for users to try out different behaviors. We recommend keeping these best practices in mind:
-
-- Reset the chat session (clear chat) if the user changes any settings. Notify the user that their chat history will be lost.
-- Clearly communicate to the user what impact each setting will have on their experience.
-- When you rotate API keys for your AOAI or ACS resource, be sure to update the app settings for each of your deployed apps to use the new key.
-- Pull in changes from `main` frequently to ensure you have the latest bug fixes and improvements, especially when using Azure OpenAI on your data.
-
 ## Environment variables
 
 Note: settings starting with `AZURE_SEARCH` are only needed when using Azure OpenAI on your data. If not connecting to your data, you only need to specify `AZURE_OPENAI` settings.
@@ -162,6 +152,4 @@ Note: settings starting with `AZURE_SEARCH` are only needed when using Azure Ope
 |AZURE_OPENAI_SYSTEM_MESSAGE|You are an AI assistant that helps people find information.|A brief description of the role and tone the model should use|
 |AZURE_OPENAI_PREVIEW_API_VERSION|2023-06-01-preview|API version when using Azure OpenAI on your data|
 |AZURE_OPENAI_STREAM|True|Whether or not to use streaming for the response|
-|AZURE_OPENAI_EMBEDDING_ENDPOINT||The endpoint for your Ada embedding model deployment if using vector search.
-|AZURE_OPENAI_EMBEDDING_KEY||The key for the Azure OpenAI resource with the Ada deployment to use with vector search.|
 
