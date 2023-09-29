@@ -3,25 +3,18 @@ import { appStateReducer } from './AppReducer';
 import { Conversation } from '../api';
   
 export interface AppState {
-    isChatHistoryOpen: boolean;
     chatHistory: Conversation[] | null;
     filteredChatHistory: Conversation[] | null;
     currentChat: Conversation | null;
 }
 
 export type Action =
-    | { type: 'TOGGLE_CHAT_HISTORY' }
     | { type: 'UPDATE_CURRENT_CHAT', payload: Conversation | null }
     | { type: 'UPDATE_FILTERED_CHAT_HISTORY', payload: Conversation[] | null }
     | { type: 'UPDATE_CHAT_HISTORY', payload: Conversation } // API Call
-    | { type: 'UPDATE_CHAT_TITLE', payload: Conversation } // API Call
-    | { type: 'DELETE_CHAT_ENTRY', payload: string } // API Call
-    | { type: 'DELETE_CHAT_HISTORY'}  // API Call
     | { type: 'DELETE_CURRENT_CHAT_MESSAGES', payload: string }  // API Call
-    | { type: 'FETCH_CHAT_HISTORY', payload: Conversation[] | null }  // API Call
 
 const initialState: AppState = {
-    isChatHistoryOpen: false,
     chatHistory: null,
     filteredChatHistory: null,
     currentChat: null,
