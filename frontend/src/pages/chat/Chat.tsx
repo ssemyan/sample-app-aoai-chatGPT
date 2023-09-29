@@ -320,7 +320,7 @@ const Chat = () => {
                                     },
                                     root: {
                                         color: '#FFFFFF',
-                                        background: disabledButton() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                                        background: disabledButton() ? "#FFFFFF" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
                                         cursor: disabledButton() ? "" : "pointer"
                                     },
                                 }}
@@ -329,6 +329,8 @@ const Chat = () => {
                                 onClick={newChat}
                                 disabled={disabledButton()}
                                 aria-label="clear chat button"
+                                // show tooltip
+                                title="Clear chat"
                             />
                             <Dialog
                                 hidden={hideErrorDialog}

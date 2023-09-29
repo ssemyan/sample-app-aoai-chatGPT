@@ -60,6 +60,7 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
                 role="button" 
                 tabIndex={0}
                 aria-label="Ask question button"
+                title="Send"
                 onClick={sendQuestion}
                 onKeyDown={e => e.key === "Enter" || e.key === " " ? sendQuestion() : null}
             >
