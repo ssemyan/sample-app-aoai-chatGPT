@@ -324,7 +324,7 @@ const Chat = () => {
                                         cursor: disabledButton() ? "" : "pointer"
                                     },
                                 }}
-                                className={styles.clearChatBroomNoCosmos}
+                                className={styles.clearChatBroom}
                                 iconProps={{ iconName: 'Broom' }}
                                 onClick={newChat}
                                 disabled={disabledButton()}
