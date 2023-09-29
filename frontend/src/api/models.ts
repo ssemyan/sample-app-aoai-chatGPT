@@ -71,24 +71,6 @@ export type UserInfo = {
     user_id: string;
 };
 
-export enum CosmosDBStatus {
-    NotConfigured = "CosmosDB is not configured",
-    NotWorking = "CosmosDB is not working",
-    Working = "CosmosDB is configured and working",
-}
-
-export type CosmosDBHealth = {
-    cosmosDB: boolean,
-    status: string
-}
-
-export enum ChatHistoryLoadingState {
-    Loading = "loading",
-    Success = "success",
-    Fail = "fail",
-    NotStarted = "notStarted"
-}
-
 export type ErrorMessage = {
     title: string,
     subtitle: string

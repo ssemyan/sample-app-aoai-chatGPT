@@ -1,4 +1,3 @@
-import { Conversation, fetchChatHistoryInit, historyList } from '../api';
 import { Action, AppState } from './AppProvider';
 
 // Define the reducer function
@@ -8,8 +7,6 @@ export const appStateReducer = (state: AppState, action: Action): AppState => {
             return { ...state, isChatHistoryOpen: !state.isChatHistoryOpen };
         case 'UPDATE_CURRENT_CHAT':
             return { ...state, currentChat: action.payload };
-        case 'UPDATE_CHAT_HISTORY_LOADING_STATE':
-            return { ...state, chatHistoryLoadingState: action.payload };
         case 'UPDATE_CHAT_HISTORY':
             if(!state.chatHistory || !state.currentChat){
                 return state;
@@ -63,8 +60,6 @@ export const appStateReducer = (state: AppState, action: Action): AppState => {
             };
         case 'FETCH_CHAT_HISTORY':
             return { ...state, chatHistory: action.payload };
-        case 'SET_COSMOSDB_STATUS':
-            return { ...state, isCosmosDBAvailable: action.payload };
         default:
             return state;
       }
