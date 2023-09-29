@@ -3,7 +3,6 @@ import os
 import logging
 import requests
 import openai
-from azure.identity import DefaultAzureCredential
 from flask import Flask, Response, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 
@@ -58,13 +57,7 @@ AZURE_OPENAI_MODEL_NAME = os.environ.get("AZURE_OPENAI_MODEL_NAME", "gpt-35-turb
 AZURE_OPENAI_EMBEDDING_ENDPOINT = os.environ.get("AZURE_OPENAI_EMBEDDING_ENDPOINT")
 AZURE_OPENAI_EMBEDDING_KEY = os.environ.get("AZURE_OPENAI_EMBEDDING_KEY")
 
-
 SHOULD_STREAM = True if AZURE_OPENAI_STREAM.lower() == "true" else False
-
-def is_chat_model():
-    if 'gpt-4' in AZURE_OPENAI_MODEL_NAME.lower() or AZURE_OPENAI_MODEL_NAME.lower() in ['gpt-35-turbo-4k', 'gpt-35-turbo-16k']:
-        return True
-    return False
 
 def should_use_data():
     if AZURE_SEARCH_SERVICE and AZURE_SEARCH_INDEX and AZURE_SEARCH_KEY:
@@ -280,31 +273,6 @@ def conversation_internal(request_body):
     except Exception as e:
         logging.exception("Exception in /conversation")
         return jsonify({"error": str(e)}), 500
-
-def generate_title(conversation_messages):
-    ## make sure the messages are sorted by _ts descending
-    title_prompt = 'Summarize the conversation so far into a 4-word or less title. Do not use any quotation marks or punctuation. Respond with a json object in the format {{"title": string}}. Do not include any other commentary or description.'
-
-    messages = [{'role': msg['role'], 'content': msg['content']} for msg in conversation_messages]
-    messages.append({'role': 'user', 'content': title_prompt})
-
-    try:
-        ## Submit prompt to Chat Completions for response
-        base_url = AZURE_OPENAI_ENDPOINT if AZURE_OPENAI_ENDPOINT else f"https://{AZURE_OPENAI_RESOURCE}.openai.azure.com/"
-        openai.api_type = "azure"
-        openai.api_base = base_url
-        openai.api_version = "2023-03-15-preview"
-        openai.api_key = AZURE_OPENAI_KEY
-        completion = openai.ChatCompletion.create(    
-            engine=AZURE_OPENAI_MODEL,
-            messages=messages,
-            temperature=1,
-            max_tokens=64 
-        )
-        title = json.loads(completion['choices'][0]['message']['content'])['title']
-        return title
-    except Exception as e:
-        return messages[-2]['content']
 
 if __name__ == "__main__":
     app.run()

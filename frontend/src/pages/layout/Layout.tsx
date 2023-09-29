@@ -18,7 +18,7 @@ const Layout = () => {
                             aria-hidden="true"
                         />
                         <Link to="/" className={styles.headerTitleContainer}>
-                            <h1 className={styles.headerTitle}>Azure AI Dating Assistant</h1>
+                            <h1 className={styles.headerTitle}>Azure Open AI Chat</h1>
                         </Link>
                     </Stack>
                 </Stack>
