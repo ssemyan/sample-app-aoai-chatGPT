@@ -61,12 +61,6 @@ AZURE_OPENAI_EMBEDDING_KEY = os.environ.get("AZURE_OPENAI_EMBEDDING_KEY")
 
 SHOULD_STREAM = True if AZURE_OPENAI_STREAM.lower() == "true" else False
 
-# CosmosDB Integration Settings
-AZURE_COSMOSDB_DATABASE = os.environ.get("AZURE_COSMOSDB_DATABASE")
-AZURE_COSMOSDB_ACCOUNT = os.environ.get("AZURE_COSMOSDB_ACCOUNT")
-AZURE_COSMOSDB_CONVERSATIONS_CONTAINER = os.environ.get("AZURE_COSMOSDB_CONVERSATIONS_CONTAINER")
-AZURE_COSMOSDB_ACCOUNT_KEY = os.environ.get("AZURE_COSMOSDB_ACCOUNT_KEY")
-
 def is_chat_model():
     if 'gpt-4' in AZURE_OPENAI_MODEL_NAME.lower() or AZURE_OPENAI_MODEL_NAME.lower() in ['gpt-35-turbo-4k', 'gpt-35-turbo-16k']:
         return True
@@ -77,46 +71,8 @@ def should_use_data():
         return True
     return False
 
-
 def format_as_ndjson(obj: dict) -> str:
     return json.dumps(obj, ensure_ascii=False) + "\n"
-
-def fetchUserGroups(userToken, nextLink=None):
-    # Recursively fetch group membership
-    if nextLink:
-        endpoint = nextLink
-    else:
-        endpoint = "https://graph.microsoft.com/v1.0/me/transitiveMemberOf?$select=id"
-    
-    headers = {
-        'Authorization': "bearer " + userToken
-    }
-    try :
-        r = requests.get(endpoint, headers=headers)
-        if r.status_code != 200:
-            return []
-        
-        r = r.json()
-        if "@odata.nextLink" in r:
-            nextLinkData = fetchUserGroups(userToken, r["@odata.nextLink"])
-            r['value'].extend(nextLinkData)
-        
-        return r['value']
-    except Exception as e:
-        return []
-
-
-def generateFilterString(userToken):
-    # Get list of groups user is a member of
-    userGroups = fetchUserGroups(userToken)
-
-    # Construct filter string
-    if userGroups:
-        group_ids = ", ".join([obj['id'] for obj in userGroups])
-        return f"{AZURE_SEARCH_PERMITTED_GROUPS_COLUMN}/any(g:search.in(g, '{group_ids}'))"
-    
-    return None
-
 
 def prepare_body_headers_with_data(request):
     request_messages = request.json["messages"]
@@ -130,10 +86,6 @@ def prepare_body_headers_with_data(request):
 
     # Set filter
     filter = None
-    userToken = None
-    if AZURE_SEARCH_PERMITTED_GROUPS_COLUMN:
-        userToken = request.headers.get('X-MS-TOKEN-AAD-ACCESS-TOKEN', "")
-        filter = generateFilterString(userToken)
 
     body = {
         "messages": request_messages,
