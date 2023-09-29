@@ -249,8 +249,9 @@ const Chat = () => {
                             />
                             <h1 className={styles.chatEmptyStateTitle}>Azure Open AI Chat</h1>
                             <h2 className={styles.chatEmptyStateSubtitle}>This is a sample chat UI based on 
-                                <a href="https://github.com/microsoft/sample-app-aoai-chatGPT">https://github.com/microsoft/sample-app-aoai-chatGPT</a>. 
-                                For setup and install instructions please refer to <a href="https://github.com/microsoft/sample-app-aoai-chatGPT">https://github.com/microsoft/sample-app-aoai-chatGPT</a>.</h2>
+                                <a href="https://github.com/microsoft/sample-app-aoai-chatGPT">sample-app-aoai-chatGPT</a>. 
+                                For setup and install instructions please refer to 
+                                <a href="https://github.com/ssemyan/sample-app-aoai-chatGPT">https://github.com/ssemyan/sample-app-aoai-chatGPT</a>.</h2>
                         </Stack>
                     ) : (
                         <div className={styles.chatMessageStream} style={{ marginBottom: isLoading ? "40px" : "0px"}} role="log">

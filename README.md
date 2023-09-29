@@ -1,8 +1,8 @@
-# Sample Chat App for use with with Azure Open AI and OpenAI (optionaly on your data)
+# Sample Chat App for use with with Azure Open AI and OpenAI 
 
-This repo contains sample code for a simple chat webapp that integrates with Azure OpenAI. It can be used to demonstrate the capabilities of Azure OpenAI, or as a starting point for your own chat app.
+This repo contains sample code for a simple chat webapp that integrates with Azure OpenAI. It can be used to demonstrate the capabilities of Azure OpenAI, or as a starting point for your own chat app. You can also make use of retrival augmented generation pattern to use your own data. [More information about Azure OpenAI on your data](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/concepts/use-your-data)
 
-This work was forked from [sample-app-aoai-chatGPT](https://github.com/microsoft/sample-app-aoai-chatGPT). I removed the history and user info in order to make a more simple sample. This project may not be kept in sync with the parent project.
+This work was forked from [sample-app-aoai-chatGPT](https://github.com/microsoft/sample-app-aoai-chatGPT). Chat history and user info was removed to make a more simple sample. Note: this project may not be kept in sync with the parent project.
 
 ## Prerequisites
 - An existing Azure OpenAI resource and model deployment of a chat model (e.g. `gpt-35-turbo-16k`, `gpt-4`)
@@ -96,7 +96,19 @@ If this is your first time deploying the app, you can use [az webapp up](https:/
 
 `az webapp up --runtime PYTHON:3.11 --sku <sku> --name <new-app-name> --resource-group <resource-group-name> --location <azure-region>`
 
-To update the app, simply run the `az webapp up` command to redeploy to the existing app:
+To create the app settings needed, first run the following to convert the `.env.sample` file into a json format that can be used by the Azure CLI:
+
+`python3 envtojson.py > appsettings.json`
+
+Edit this file to match what settings you want in Azure, then run the following command to set the app settings.
+
+`az webapp config appsettings set --resource-group <resource-group-name> --name <new-app-name> --settings @appsettings.json`
+
+Now use the `az webapp restart` command to restart the app with the new settings.
+
+`az webapp restart --resource-group <resource-group-name> --name <new-app-name>`
+
+To update the app when you make changes, simply run the `az webapp up` command to redeploy to the existing app:
 
 `az webapp up --runtime <runtime-stack> --sku <sku> --name <existing-app-name> --resource-group <resource-group-name>`
 
