@@ -21,6 +21,25 @@ Please see the [section below](#add-an-identity-provider) for important informat
 ### Deploy from your local machine
 
 #### Local Setup: Basic Chat Experience
+
+1. Create a Python virtual environment ".venv" in the root folder of the repo. This will be used to install the backend dependencies.
+    ```
+    python3 -m venv .venv
+    ```
+
+1. Instal the python dependencies from "requirements.txt" into the virtual environment.
+    ```
+    ./.venv/bin/python -m pip install -r requirements.txt
+    ```
+
+1. Install the frontend dependencies and build the frontend into the "static" directory.
+    ```
+    cd frontend
+    npm install
+    npm run build
+    cd ..
+    ```
+
 1. Update the environment variables listed in `app.py` as described in the [Environment variables](#environment-variables) section.
     
     These variables are required:
@@ -37,9 +56,9 @@ Please see the [section below](#add-an-identity-provider) for important informat
 
     See the [documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#example-response-2) for more information on these parameters.
 
-2. Start the app with `start.cmd`. This will build the frontend, install backend dependencies, and then start the app.
+1. Start the app with `./start.sh`. 
 
-3. You can see the local running app at http://127.0.0.1:5000.
+1. You can see the local running app at http://127.0.0.1:5000.
 
 #### Local Setup: Chat with your data (Preview)
 [More information about Azure OpenAI on your data](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/concepts/use-your-data)
